@@ -1,5 +1,6 @@
 import { crearAnimal, arrayAnimales } from "./crearAnimal.mjs";
-import { Leon, Lobo, Oso, Serpiente, Aguila } from "./clases.mjs";
+import { reproducirSonidos } from "./reproducirSonidos.mjs";
+import { abrirModal } from "./abrirModal.mjs";
 
 /* Inicializar variables que utilizaremos más adelante */
 let dataAnimales;
@@ -28,6 +29,7 @@ modulo.getData().then((data) => (dataAnimales = data));
 /* Previsualización de la imagen del animal en el formulario HTML cuando cambie el valor de select */
 $("#animal").on("change", function () {
   let animal = dataAnimales.find((element) => element.name === this.value);
+  /* se actualiza las variables con las rutas de la imagen y el sonido del animal entregados por el archivo json*/
   imagenAnimal = animal.imagen;
   sonidoAnimal = animal.sonido;
   $("#preview").css("background-image", `url(${animal.imagen})`);
@@ -40,7 +42,7 @@ $("#btnRegistrar").on("click", () => {
   let comentariosAnimal = $("#comentarios").val();
   /* Validar que el usuario haya ingresado todos los datos necesarios en el formulario */
   if (nombreAnimal != null && edadAnimal != null && comentariosAnimal != "") {
-    /* Se envía datos a la función que crea instancia de animal */
+    /* Se envía datos a la función que crea la instancia de animal */
     crearAnimal(
       nombreAnimal,
       edadAnimal,
@@ -54,67 +56,25 @@ $("#btnRegistrar").on("click", () => {
     $("#comentarios").val("");
     $("#preview").css("background-image", "url(./assets/imgs/lion.svg)");
   } else {
+    /* si no se completaron los datos al presionar el botón, se envía una alerta */
     alert("debes completar todos los campos");
   }
 
-  /* función para rellenar la tabla */
+  /* Rellenar la tabla y creación de tarjetas */
   let div = document.getElementById("Animales");
   let animalList = "";
-
-  ///******************************************************************************** */
-  /* AQUI COMIENZA EL PROBLEMA */
-  arrayAnimales.forEach((animal, index) => {
-    //let button = `<button> crear sonido </button>`;
-    let card = `<div class="card" style="width: 12rem; height: 15rem">
+  arrayAnimales.forEach((animal) => {
+    let card = `<div class="card mx-3" style="width: 12rem; height: 15rem">
                   <img class="card-img-top" style="height: 83%" src="${animal.img}" alt="Card image cap"/>
-                  <div id="${index}"class="card-body bg-secondary" style="background-image: url(./assets/imgs/audio.svg);background-repeat: no-repeat;background-position: center;height: 17%;">
+                  <div  class="card-body bg-secondary" style="background-image: url(./assets/imgs/audio.svg);background-repeat: no-repeat;background-position: center;height: 17%;">
                   </div>
                 </div>`;
-    //let img = `<img class="card-img-top" style="height: 83%" src="${animal.imagen}" alt="Card image cap"/>`;
-    //let body = `<div class="card-body bg-secondary" style="background-image: url(./assets/imgs/audio.svg);background-repeat: no-repeat;background-position: center;height: 17%;"></div>`;
 
     animalList += card;
     div.innerHTML = animalList;
-
-    /* let indice = index;
-    let sonido;
-
-    if (animal instanceof Leon) {
-      sonido = animal.rugir();
-    } else if (animal instanceof Lobo) {
-      sonido = animal.aullar();
-    } else if (animal instanceof Oso) {
-      sonido = animal.grunir();
-    } else if (animal instanceof Serpiente) {
-      sonido = animal.sisear();
-    } else if (animal instanceof Aguila) {
-      sonido = animal.chillar();
-    } */
-
-    /* console.log(indice);
-    console.log(sonido); */
-    let boton = document.getElementById(`${index}`);
-    boton.addEventListener("click", () => {
-      console.log(animal);
-      if (animal instanceof Leon) {
-        animal.rugir();
-      } else if (animal instanceof Lobo) {
-        animal.aullar();
-      } else if (animal instanceof Oso) {
-        animal.grunir();
-      } else if (animal instanceof Serpiente) {
-        animal.sisear();
-      } else if (animal instanceof Aguila) {
-        animal.chillar();
-      }
-    });
-    /* if (boton) {
-      console.log("boton existe");
-      boton.addEventListener("click", () => {
-        console.log(boton.length);
-      });
-    } else {
-      console.log("boton no existe");
-    } */
   });
+
+  /* una vez finalizado el relleno de la tabla, se procede a añadir la función de sonido y modal a cada tarjeta */
+  reproducirSonidos(arrayAnimales);
+  abrirModal(arrayAnimales);
 });

@@ -1,7 +1,7 @@
-import { Leon, Lobo, Oso, Serpiente, Aguila } from "./clases.mjs";
+import { Animal, Leon, Lobo, Oso, Serpiente, Aguila } from "./clases.mjs";
 
 let arrayAnimales = [];
-
+/* Se reciben los datos del formulario para crear la instancia del animal que corresponda según el nombre */
 const crearAnimal = (
   nombreAnimal,
   edadAnimal,
@@ -60,47 +60,9 @@ const crearAnimal = (
     default:
       break;
   }
-
-  if (animal) {
+  /* Si el animal corresponde a una clase de Animal se añade a ArrayAnimales */
+  if (animal instanceof Animal) {
     arrayAnimales.push(animal);
-
-    /* let animalList = "";
-    const sonar = (element) => {
-      if (element.nombre === "Lobo") {
-        element.aullar();
-      } else if (element.nombre === "Aguila") {
-        element.chillar();
-      } else if (element.nombre === "Oso") {
-        element.grunir();
-      } else if (element.nombre === "Leon") {
-        element.rugir();
-      } else if (element.nombre === "Serpiente") {
-        element.sisear();
-      }
-    };
-    arrayAnimales.forEach((element) => {
-      let card = `<div class="card" style="width: 12rem; height: 15rem">
-      <img
-        class="card-img-top"
-        style="height: 83%"
-        src="${element.img}"
-        alt="Card image cap"
-      />
-      <div
-        class="card-body bg-secondary"
-        style="
-          background-image: url(./assets/imgs/audio.svg);
-          background-repeat: no-repeat;
-          background-position: center;
-          height: 17%;
-        "
-        id="activar"
-      > <button onClick="${sonar(element)}">activar</button> </div>
-    </div>`;
-      animalList += card;
-
-      document.getElementById("Animales").innerHTML = animalList;
-    }); */
   }
 
   console.log(arrayAnimales);
